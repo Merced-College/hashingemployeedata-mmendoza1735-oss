@@ -1,17 +1,20 @@
+//Miguel Mendoza
+//Jason Loa
+//11-6-25
+//Does something with employee data and hash tables
 import java.io.*;
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        // TODO: create your ChainingHashTable using zyBook code
+        
         ChainingHashTable<String, Employee> table = new ChainingHashTable<>(11);
-
-        // TODO: make an ArrayList to store duplicate Employee objects
-        // ArrayList<Employee> duplicates = ...
+        
+        ArrayList<Employee> duplicates = new ArrayList<>();
 
         // TODO: make counters to keep track of total employees and duplicates
-        // int totalLoaded = 0;
-        // int duplicatesFound = 0;
+        int totalLoaded = 0;
+        int duplicatesFound = 0;
 
         try (BufferedReader br = new BufferedReader(new FileReader("Employee_data.csv"))) {
             String line = br.readLine(); // skip header
@@ -35,8 +38,20 @@ public class Main {
                 String key = (emp.lastName + emp.firstName).toLowerCase();
 
                 // TODO: use table.get(key) to see if an employee already exists
+                Employee existing = table.get(key);
                 // if it exists, and it’s the same department, treat it as a duplicate
+                if (existing != null) {
+                    if (existing.department.equalsIgnoreCase(emp.department)) {
+                        duplicates.add(emp);
+                        duplicatesFound++;
+                    } else {
+                        table.insert(key, emp);
+                    }
+                } else {
+                    table.insert(key, emp);
+                }
                 // otherwise insert into the hash table
+                table.insert(key, emp);
 
                 // Example:
                 // Employee existing = table.get(key);
